@@ -19,13 +19,13 @@ class ItemFavorite extends Component {
   render() {
     const item = this.props.item;
     return (
-      <Card style={{height:400, width :400}}
+      <Card 
         onClick={() => {
           this.props.onItemMovieClick(item);
         }}
         hoverable
         cover={<img 
-          src={item.images.fixed_width.url}  style = {{height:400, width :400 }}/>}
+          src={item.images.fixed_width.url}  style = {{height:300}}/>}
       >
         <Meta
           title={item.title}

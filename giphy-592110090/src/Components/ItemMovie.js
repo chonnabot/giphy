@@ -23,7 +23,7 @@ function ItemMovie(props) {
         props.onItemMovieClick(item);
       }}
       hoverable
-      cover={<img src={item.images.fixed_width.url} style = {{height:400}}/>}
+      cover={<img src={item.images.fixed_width.url} style = {{height:300}}/>}
     >
       <Meta
         title={item.title}

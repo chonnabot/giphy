@@ -1,9 +1,10 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import ListMovie from '../Components/ListMovie';
 import ListFavorite from '../Components/favorite/list';
 import Profile from '../Components/profile';
-// import Main from '../Containers/Main';
+import Main from './Main';
+
 
 function RouteMenu(props) {
   return (
@@ -15,10 +16,9 @@ function RouteMenu(props) {
           return <ListMovie items={props.items} />;
         }}
       />
-      <Route path="/favorite" exact component={ListFavorite} />
-      <Route path="/profile" exact component={Profile} />
-      {/* <Route path="/Logout" exact component={Main} /> */}
-      <Redirect from="/*" exact to="/" />
+      <Route exact path="/home" component={Main} />
+      <Route exact path="/favorite"  component={ListFavorite} />
+      <Route exact path="/profile" component={Profile} />
     </Switch>
   );
 }

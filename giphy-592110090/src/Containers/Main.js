@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Spin, Modal, Button, Layout, Menu, message, Input, Icon, Pagination, Row, Col } from 'antd';
+import { Spin, Modal, Button, Layout, Menu, message, Input, Icon, Row, Col } from 'antd';
 import RouteMenu from './RouteMenu';
 import { connect } from 'react-redux';
 
 const { Header, Content, Footer } = Layout;
-const menus = ['movies', 'favorite', 'profile', 'Logout'];
+const menus = ['movies', 'favorite', 'profile'];
 const KEY_USER_DATA = 'user_data';
 
 const Search = Input.Search;
@@ -50,17 +50,16 @@ class Main extends Component {
   };
 
   componentDidMount() {
+    const { pathname } = this.props.location;
+    let pathName = menus[0];
+    if (pathname != '/') {
+      pathName = pathname.replace('/', '');
+      if (!menus.includes(pathName)) pathName = menus[0];
+    }
     const jsonStr = localStorage.getItem('list-fav');
     if (jsonStr) {
       const items = jsonStr && JSON.parse(jsonStr);
       this.setState({ favItems: items });
-    }
-
-    const { pathname } = this.props.location;
-    var pathName = menus[0];
-    if (pathname != '/') {
-      pathName = pathname.replace('/', '');
-      if (!menus.includes(pathName)) pathName = menus[0];
     }
     this.setState({ pathName });
     fetch('https://api.giphy.com/v1/gifs/trending?api_key=E9q3svPQ1G6boeQhQ2NCVLyY3rcH90L7&limit=400&rating=G')
@@ -140,7 +139,7 @@ class Main extends Component {
   render() {
     const item = this.props.itemMovieClick;
     return (
-      <div>
+      <div style={{width: '100%'}}>
         {this.state.items.length > -1 ? (
           <div style={{ height: '100vh' }}>
             {' '}
@@ -153,34 +152,34 @@ class Main extends Component {
                   width: '100%'
                 }}
               >
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={[this.state.pathName]}
-                    align='right'
-                    style={{ lineHeight: '64px' }}
-                    onClick={e => {
-                      this.onMenuClick(e);
-                    }}
-                  >
-                    <Menu.Item key={menus[0]} ><Icon type="home" />Home</Menu.Item>
-                    <Menu.Item key={menus[1]}><Icon type="heart" />Favorite</Menu.Item>
-                    <Menu.Item key={menus[2]}><Icon type="user" />Profile</Menu.Item>
-                  </Menu>
-                </Col>
-                <Col span={6}>
-                <Button htmlType="submit" type="primary" onClick={this.showDialogConfirmLogout} ><Icon type="poweroff" /> Logout</Button>
-                </Col>
-                <Col span={6}>
-                <Search
-                  placeholder="input search text"
-                  onSearch={value => this.filterData(value)}
-                  enterButton
-                />
-                </Col>
-              </Row>
+                <Row gutter={16}>
+                  <Col span={10}>
+                    <Search
+                      placeholder="input search text"
+                      onSearch={value => this.filterData(value)}
+                      enterButton
+                    />
+                  </Col>
+                  <Col span={10}>
+                    <Menu
+                      theme="dark"
+                      mode="horizontal"
+                      defaultSelectedKeys={[this.state.pathName]}
+                      align='right'
+                      style={{ lineHeight: '64px' }}
+                      onClick={e => {
+                        this.onMenuClick(e);
+                      }}
+                    >
+                      <Menu.Item key={menus[0]} ><Icon type="home" />Home</Menu.Item>
+                      <Menu.Item key={menus[1]}><Icon type="heart" />Favorite</Menu.Item>
+                      <Menu.Item key={menus[2]}><Icon type="user" />Profile</Menu.Item>
+                    </Menu>
+                  </Col>
+                  <Col span={2}  >
+                    <Button htmlType="submit" type="primary" onClick={this.showDialogConfirmLogout} ><Icon type="poweroff" /> Logout</Button>
+                  </Col>
+                </Row>
               </Header>
               <Content
                 style={{
@@ -195,7 +194,8 @@ class Main extends Component {
                 <RouteMenu items={this.state.items} />
               </Content>
               <Footer style={{ textAlign: 'center', background: 'white' }}>
-              <div>
+                <div>
+
                   Giphy Application @ CAMT 5921009909
               </div>
               </Footer>
